@@ -1,0 +1,227 @@
+ [[ ANALISE BOLSA DE VALORES IA PYTHON ]]
+
+Vamos usar análise fundamentalista :
+	* Pegando todos os fundamentos das empresas
+	* Para escolher qual empresa comprar ou não
+
+
+
+----------------------------------------------------
+----------------------------------------------------
+
+             AULA 2
+
+> USAR VERSÃO 3.8 DO PYTHON PARA RODAR
+> POR SE TRATAR DE BASE DE DADOS ANTIGA (XLS) INSTALE O xlrd
+
+
+
+***********************************
+
+ > Para filtrar dados no Pandas, utilize o loc[liha, coluna]
+
+***********************************
+
+> Para criar inserir dados em uma lista, pode fazer :
+
+fundamentos = {}
+fundamentos[nome] = pd.concat([balanco,dre])
+
+PD.CONCAT ([]) -> serve para concatenar os dataframes
+
+***********************************
+
+for empresas in cotacoes_df['Empresa'].unique:
+
+-> O Unique serve para pegar apenas 1 linha aonde na coluna empresa não se repita o nome
+
+***********************************
+
+
+# EM UMA ANALISE DE DADOS NÃO PODE CONTER LINHAS VAZIAS, ENTÃO NO CASO DAS COTAÇÕES, IREMOS REMOVER AS LINHAS QUE FOREM VAZIAS (pode ser que a ação não havia existido na epóca)
+
+***********************************
+
+        cotacoes.pop(empresa)
+> Pop = remover
+
+***********************************
+
+tabela = fundamentos[empresa].T
+t = transpose (troca as linhas por colunas)
+
+***********************************
+
+tabela.index = pd.to_datetime(tabela.index,format='%d/%m/%Y')
+
+transformar a tabela que esta em texto, para data, e o Y maiusculo serve como yyyy, e se fosse minusculo seria como yy.
+
+***********************************
+
+tabela_cotacao = tabela_cotacao[['Adj Close']]
+
+Dentro da tabela, quero apenas a coluna  'Adj Close'
+
+***********************************
+
+tabela = tabela.merge(tabela_cotacao,right_index=True,left_index=True)
+
+Merge = inserir na outra tabela
+quero colocar na tabela apenas as linhas que tem na mesma tabela (parecido com join)
+
+***********************************
+
+    if set(colunas) != set(fundamentos[empresa].columns):
+
+set = mesmo valor, independente da ordem
+
+se independente da ordem, alguma coluna for diferente das colunas que tem na tabela COLUNA :
+
+***********************************
+
+valores_vazios = dict.fromkeys(colunas,0)
+
+A função dict.fromkeys é usada para criar um novo dicionário com chaves fornecidas e com valores todos iguais a um valor específico (por padrão, None).
+
+***********************************
+
+total_linhas += tabela.shape[0]
+
+shape = quantidade de colunas e linhas
+
+
+***********************************
+
+# COLOCAR AS DATAS EM ORDEM CRESCENTE
+df_ibov = df_ibov.sort_index()
+
+***********************************
+
+PEGAR COTAÇÕES DO YAHOO FINANCE =
+
+import pandas_datareader.data as pdr
+import yfinance as yf
+
+data_inicial = "12/20/2012"
+data_final = "04/20/2021"
+
+data_inicial = pd.to_datetime(data_inicial)
+data_final = pd.to_datetime(data_final)
+
+yf.pdr_override()
+
+
+# biblioteca para pegar informações da wb
+from pandas_datareader import data as web
+
+
+df_ibov = pdr.get_data_yahoo("^BVSP", start=data_inicial, end=data_final)
+
+
+***********************************
+
+# TROCAR NOME DA COLUNA 'ADJ CLOSE' DO IBOVESPA =
+HH
+df_ibov = df_ibov.rename(columns={'Adj Close':'IBOV'})
+display(df_ibov)HH
+
+
+***********************************
+
+** NO FOR DENTRO DE UMA TABELA, ELE PERCORRERÁ AS COLUNAS **
+
+***********************************
+
+# PARA TRATAR DADOS -NEGATIVOS E +POSITIVOS E ZERO, USAREMOS VALORES ABSOLUTOS
+
+
+***********************************
+
+# filna() -> Você escolhe com o valor que quer que seja preenchido
+
+fundamentos[empresa] = fundamentos[empresa].fillna(0)
+
+***********************************
+
+print(base_dados["Decisao"].value_counts(normalize=True).map("{:.1%}".format))
+
+values_cont() = Para dar a quantidade de informações que tem em cada categoria em formatação %
+
+***********************************
+
+Criar gráfico e mostrar:
+
+fig = px.histogram(base_dados,x="Decisao",color="Decisao")
+fig.show()
+
+***********************************
+
+
+Mostrar correlação :
+correlacao = base_dados.corr()
+
+
+***********************************
+
+grafico de calor :
+
+fig, ax = plt.subplots(figsize =(15,10))
+sns.heatmap(correlacao,cmap="Wistia",ax=ax)
+plt.show()
+
+* figsize = tamanho do gráfico
+* heatmap = mapa de calor
+* cmap = cor do gráfico
+* ax=ax = fig,*ax*
+
+
+
+***********************************
+
+* Annot = Valores dentro do quadrado do grafico
+
+sns.heatmap(cf_matrix,annot=True,cmap="Blues")
+
+***********************************
+
+# SALVAR ARQUIVO
+joblib.dump()
+
+
+***********************************
+
+
+
+
+***********************************
+
+
+
+
+***********************************
+
+
+
+
+***********************************
+
+
+
+
+***********************************
+
+
+
+
+***********************************
+
+
+
+
+***********************************
+
+
+
+
+***********************************
+
